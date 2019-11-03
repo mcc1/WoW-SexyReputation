@@ -476,6 +476,7 @@ function ldb.OnEnter(frame)
    local isTopLevelHeader, isChildHeader
    local todaysDate = mod:GetDate()
    local showOnlyChanged = mod.gdb.showOnlyChanged
+   local hideExalted = mod.gdb.hideExalted
    local watchedFaction = mod.cdb.watchedFaction
    local gridLines = mod.gdb.gridLines
    local indent, isTopLevelHeader, isChildHeader, sessionChange, today, showRow
@@ -497,6 +498,8 @@ function ldb.OnEnter(frame)
 	 showRow = false
       elseif showOnlyChanged and not (sessionChange or today) then
 	 showRow = false
+      elseif hideExalted and faction.standingId == 8 then
+         showRow = false
       end
       if showRow then
 	 local title, folded
@@ -528,6 +531,10 @@ function ldb.OnEnter(frame)
 	       tooltip:SetCell(y, x, c(repTitle, color), "LEFT") x = x + 1
 	    end
 	    local maxValue = faction.topValue-faction.bottomValue
+            if maxValue == 0 then 
+               maxValue = 21000 -- Exalted rep has no max value
+               rep = 21000
+            end
 	    if showRep then
 	       tooltip:SetCell(y, x, tostring(rep), "RIGHT") x = x + 1
 	       tooltip:SetCell(y, x, "/", "CENTER") x = x + 1

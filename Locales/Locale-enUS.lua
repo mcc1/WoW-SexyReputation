@@ -62,3 +62,5 @@ L["Whether to show the standing and/or reputation level text."] = true
 L["Yesterday"] = true
 L["Remaining"] = true
 L["Repetitions"] = true
+L["Hide Exalted Factions"] = true
+L["Hide factions at exalted / max standing."] = true
