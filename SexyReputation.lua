@@ -162,7 +162,7 @@ function mod:ScanFactions(toggleActiveId)
       local nextName = GetFactionInfo(idx + 1)
       if name == nextName then break end -- bugfix
       if not name then  break end -- last one reached
-      local friendId, friendRep, friendMaxRep, _, friendshipText, _, friendTextLevel, friendThresh, nextFriendThresh = GetFriendshipReputation(factionId);
+      local friendId, friendRep, friendMaxRep, _, friendshipText, _, friendTextLevel, friendThresh, nextFriendThresh = GetFriendshipReputation and GetFriendshipReputation(factionId);
       local isCapped
       if (friendId ~= nil) then
          if nextFriendThresh then
