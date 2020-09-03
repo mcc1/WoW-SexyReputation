@@ -64,3 +64,5 @@ L["Remaining"] = true
 L["Repetitions"] = true
 L["Hide Exalted Factions"] = true
 L["Hide factions at exalted / max standing."] = true
+L["Always show Paragon Factions"] = true
+L["When enabled, Paragon factions will be shown when Exalted factions are hidden."] = true

@@ -174,7 +174,7 @@ function mod:ScanFactions(toggleActiveId)
 
         local nextName = GetFactionInfo(idx + 1)
 
-        if name == nextName then break end -- bugfix
+        if name == nextName and nextName ~= "Guild" then break end -- bugfix
         if not name then  break end -- last one reached
         local friendId, friendRep, friendMaxRep, _, friendshipText, _, friendTextLevel, friendThresh, nextFriendThresh = GetFriendshipReputation and GetFriendshipReputation(factionId);
         local isCapped
@@ -497,6 +497,7 @@ function ldb.OnEnter(frame)
     local todaysDate = mod:GetDate()
     local showOnlyChanged = mod.gdb.showOnlyChanged
     local hideExalted = mod.gdb.hideExalted
+    local showParagon = mod.gdb.showParagon
     local watchedFaction = mod.cdb.watchedFaction
     local gridLines = mod.gdb.gridLines
     local indent, isTopLevelHeader, isChildHeader, sessionChange, today, showRow
@@ -519,7 +520,7 @@ function ldb.OnEnter(frame)
         elseif showOnlyChanged and not (sessionChange or today) then
             showRow = false
         elseif hideExalted and faction.standingId == 8 then
-            showRow = false
+            showRow = faction.isParagon and showParagon
         end
         if showRow then
             local title, folded
