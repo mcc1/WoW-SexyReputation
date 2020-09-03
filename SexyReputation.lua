@@ -331,7 +331,7 @@ local function delta(number, zero)
     if number < 0 then
         return fmt("|cffff2020%d|r", number)
     elseif number > 0 then
-        return fmt("|cff00af00+%d|r", number)
+	return fmt("|cff00ef9a+%d|r", number)
     else
         return "|cffcfcfcf0|r"
     end
