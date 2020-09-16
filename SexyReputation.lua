@@ -161,14 +161,14 @@ function mod:ScanFactions(toggleActiveId)
         local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith ,
         canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionId = GetFactionInfo(idx)
 
-        local isParagon, paraVal, paraThres, paraRewardPending
+        local isParagon, paraVal, paraThreshold, paraRewardPending
 
         --check if paragon and grab info
         if factionId then
             isParagon = C_Reputation.IsFactionParagon(factionId)
 
             if isParagon then
-                paraVal, paraThres, _, paraRewardPending, _ = C_Reputation.GetFactionParagonInfo(factionId)
+                paraVal, paraThreshold, _, paraRewardPending, _ = C_Reputation.GetFactionParagonInfo(factionId)
             end
         end
 
@@ -199,7 +199,7 @@ function mod:ScanFactions(toggleActiveId)
                 "hasRep", hasRep or earnedValue ~= 0,
                 "isParagon", isParagon or false,
                 "paraVal", paraVal or nil,
-                "paraThresh", paraThres or nil,
+                "paraThresh", paraThreshold or nil,
                 "paraRewardPending", paraRewardPending or nil,
                 "isChild", isChild,
                 "friendId", friendId,
@@ -378,7 +378,8 @@ local function _showFactionInfoTooltip(frame, faction)
 
                     local color, rep, repTitle = mod:ReputationLevelDetails(faction)
                     if not faction.friendId then
-                        local remaining = 42999 - faction.bottomValue - rep
+
+                        local remaining = faction.isParagon and (faction.paraThresh - faction.paraVal % faction.paraThresh) or (42999 - faction.bottomValue - rep)
                         if remaining > 0 then
                             tooltip:AddLine(L["Remaining"], remaining)
                         end
