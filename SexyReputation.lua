@@ -158,7 +158,7 @@ function mod:ScanFactions(toggleActiveId)
     local fr = mod.cdb.fr
 
     for idx = 1, 500 do
-        local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
+        local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith ,
         canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionId = GetFactionInfo(idx)
 
         local isParagon, paraVal, paraThres, paraRewardPending
@@ -280,11 +280,11 @@ function mod:GetGainsSummary(id)
     if not fc[id] then
         newlyCalculated = true
         local todayDate = mod:GetDate()
-        local yesterDate = mod:GetDate(86400)
+        local yesterdayDate = mod:GetDate(86400)
         local fh = mod.cdb.factionHistory
         local todayChange = fh[todayDate] and fh[todayDate][id] or 0
-        local yesterChange = fh[yesterDate] and fh[yesterDate][id] or 0
-        local weekChange = (todayChange or 0) + (yesterChange or 0)
+        local yesterdayChange = fh[yesterdayDate] and fh[yesterdayDate][id] or 0
+        local weekChange = (todayChange or 0) + (yesterdayChange or 0)
         for day = 2,6 do
             local dayChange = fh[mod:GetDate(day*86400)] -- going back in time
             if dayChange and dayChange[id] then
@@ -299,10 +299,10 @@ function mod:GetGainsSummary(id)
             end
         end
         fc[id] = newHash("today", todayChange,
-                "yesterday", yesterChange,
+                "yesterday", yesterdayChange,
                 "week", weekChange,
                 "month", monthChange,
-                "changed", todayChange ~= 0 or yesterChange ~= 0
+                "changed", todayChange ~= 0 or yesterdayChange ~= 0
                         or weekChange ~= 0 or monthChange ~= 0)
     end
     return fc[id], newlyCalculated
@@ -753,21 +753,23 @@ end
 --- EVENT HANDLING
 do
     local factionScanTimer
+    function ScheduleFactionScan()
+        if factionScanTimer then
+            mod:CancelTimer(factionScanTimer, true)
+        end
+
+        factionScanTimer = mod:ScheduleTimer("ScanForFactionChanges", 1)
+    end
 
     function mod:COMBAT_TEXT_UPDATE(event, type, faction, amount)
         if type == "FACTION" then
-
-            if factionScanTimer then
-                mod:CancelTimer(factionScanTimer, true)
-            end
-
-            factionScanTimer = mod:ScheduleTimer("ScanForFactionChanges", 1)
+            ScheduleFactionScan()
         end
     end
 
     function mod:QUEST_TURNED_IN(event, questID, xp, money)
         --rescan for paragon status change
-        mod:ScanFactions()
+        ScheduleFactionScan()
     end
 
     function mod:ScanForFactionChanges()
@@ -787,9 +789,12 @@ do
             local idx = mod.factionIdToIdx[faction.id] -- required since faction orders might have changed
             if idx then
                 local newFaction = mod.allFactions[idx]
-                if newFaction.reputation ~= faction.reputation then
+                if newFaction.reputation ~= faction.reputation or
+                        (newFaction.isParagon and newFaction.paraVal ~= faction.paraVal)
+                then
                     -- Rep change occurred
-                    local amount = newFaction.reputation - faction.reputation
+                    local paraAmount = newFaction.isParagon and (newFaction.paraVal - faction.paraVal) or 0
+                    local amount = paraAmount + newFaction.reputation - faction.reputation
                     mod.sessionFactionChanges[faction.id] = (mod.sessionFactionChanges[faction.id] or 0) + amount
                     today[faction.id] = (today[faction.id] or 0) + amount
 
