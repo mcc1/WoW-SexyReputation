@@ -18,4 +18,5 @@ externals:
 	Libs/LibMagicUtil-1.0: https://github.com/neotron/WoW-libMagicUtil.git
 	Libs/LibDropdown-1.0: https://github.com/neotron/WoW-LibDropDown.git
 	Libs/LibQTip-1.0: https://repos.wowace.com/wow/libqtip-1-0
+    
 
