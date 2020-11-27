@@ -184,14 +184,10 @@ function mod:ScanFactions(toggleActiveId)
         local friendId, friendRep, friendMaxRep, _, friendshipText, _, friendTextLevel, friendThresh, nextFriendThresh =  GetFriendshipReputation(factionId)
         local isCapped
         if (friendId ~= nil) then
-            print(GetFriendshipReputation(factionId))
-            print("friendid: "..(friendId or "nil").." for faction "..(name or "nil" ) .. " id ".. (factionId or "unknown") .. " thres ".. (friendThresh or "nil") .. " - " .. (nextFriendThresh or "nil") .. " => ".. (friendTextLevel or "nil"))
-            print("This is a friend with thres ".. (nextFriendThresh or "nil"))
             if nextFriendThresh then
                 bottomValue = friendThresh
                 topValue = nextFriendThresh
                 earnedValue = friendRep
-                print("bottom value "..bottomValue..", topValue "..topValue..", earned ".. earnedValue)
             else
                 bottomValue, topValue, earnedValue = 0, 1, 1
                 isCapped = true
