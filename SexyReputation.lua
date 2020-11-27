@@ -1,5 +1,5 @@
-local SexyReputations = LibStub("AceAddon-3.0"):NewAddon("Sexy Reputations", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0")
-local mod = SexyReputations
+SexyReputation = LibStub("AceAddon-3.0"):NewAddon("Sexy Reputations", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0")
+local mod = SexyReputation
 local tooltip
 
 local GetNumFactions = GetNumFactions
@@ -145,6 +145,11 @@ function mod:FactionID(name)
     return id
 end
 
+-- Classic compatibility
+if GetFriendshipReputation == nil then
+    function GetFriendshipReputation() return nil end
+end
+
 function mod:ScanFactions(toggleActiveId)
     local foldedHeaders = new()
 
@@ -176,13 +181,17 @@ function mod:ScanFactions(toggleActiveId)
 
         if name == nextName and nextName ~= "Guild" then break end -- bugfix
         if not name then  break end -- last one reached
-        local friendId, friendRep, friendMaxRep, _, friendshipText, _, friendTextLevel, friendThresh, nextFriendThresh = GetFriendshipReputation and GetFriendshipReputation(factionId);
+        local friendId, friendRep, friendMaxRep, _, friendshipText, _, friendTextLevel, friendThresh, nextFriendThresh =  GetFriendshipReputation(factionId)
         local isCapped
         if (friendId ~= nil) then
+            print(GetFriendshipReputation(factionId))
+            print("friendid: "..(friendId or "nil").." for faction "..(name or "nil" ) .. " id ".. (factionId or "unknown") .. " thres ".. (friendThresh or "nil") .. " - " .. (nextFriendThresh or "nil") .. " => ".. (friendTextLevel or "nil"))
+            print("This is a friend with thres ".. (nextFriendThresh or "nil"))
             if nextFriendThresh then
                 bottomValue = friendThresh
                 topValue = nextFriendThresh
                 earnedValue = friendRep
+                print("bottom value "..bottomValue..", topValue "..topValue..", earned ".. earnedValue)
             else
                 bottomValue, topValue, earnedValue = 0, 1, 1
                 isCapped = true
