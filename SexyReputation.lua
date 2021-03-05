@@ -170,7 +170,7 @@ function mod:ScanFactions(toggleActiveId)
 
         --check if paragon and grab info
         if factionId then
-            isParagon = C_Reputation.IsFactionParagon(factionId)
+            isParagon = C_Reputation and C_Reputation.IsFactionParagon(factionId)
 
             if isParagon then
                 paraVal, paraThreshold, _, paraRewardPending, _ = C_Reputation.GetFactionParagonInfo(factionId)
