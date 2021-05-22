@@ -1,9 +1,13 @@
-## Interface: 90002
-## X-Compatible-With: 90002
-## Title: Sexy Reputations
+## Interface: 90005
+## Interface-Classic: 11306
+## Interface-BCC: 20501
+## Interface-Retail: 90005
+## X-Curse-Project-ID: 27993
+## X-WoWI-ID: 23129
+## Title: Sexy Reputation
 ## Notes: A fancy LDB reputation display, show faction reputation and reputation change history
 ## Author: NeoTron
-## Version: 9.0.2-2
+## Version: 9.0.5
 ## X-Category: Tooltip
 ## X-eMail: neotron@gmail.com
 ## OptionalDeps: Ace3, LibDatabroker-1.1, LibMagicUtil-1.0, LibQTip-1.0, LibDataBroker-1.1, LibDropdown-1.0
