@@ -15,7 +15,7 @@ local FL
 
 local L        = LibStub("AceLocale-3.0"):GetLocale("SexyReputation", false)
 local LD       = LibStub("LibDropdown-1.0")
-local QTIP     = LibStub("LibQTipSexyRep-1.0")
+local QTIP     = LibStub("LibQTip-1.0")
 local BAR      = LibStub("LibSimpleBar-1.0")
 
 local ldb = LibStub("LibDataBroker-1.1"):NewDataObject(L["Sexy Reputation"],
